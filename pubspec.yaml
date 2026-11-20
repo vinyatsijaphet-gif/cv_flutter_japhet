@@ -1,0 +1,26 @@
+name: cv_flutter_japhet
+description: "Application Flutter : CV, famille et contact de Japhet."
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.4.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^6.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/ben.jpg
+    - assets/images/grace.jpg
+    - assets/images/deborah.jpg
+    - assets/images/dorothee.jpg
+    - assets/images/moi.jpg
