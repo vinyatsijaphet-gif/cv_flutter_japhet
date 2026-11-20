@@ -164,40 +164,43 @@ class _HomeShellState extends State<HomeShell> {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  Widget _section(String title, IconData icon, List<String> items) => Card(
-    margin: const EdgeInsets.only(bottom: 12),
-    child: Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(children: [
-            Icon(icon, color: Colors.indigo),
-            const SizedBox(width: 8),
-            Expanded(
-              child: Text(title,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold)),
-            ),
-          ]),
-          const Divider(),
-          for (final s in items)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 3),
-              child: Text('• $s'),
-            ),
-        ],
-      ),
-    ),
-  );
-
+    Widget _section(String title, IconData icon, List<String> items,
+          {Color color = Colors.indigo}) =>
+      Card(
+        margin: const EdgeInsets.only(bottom: 12),
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(children: [
+                Icon(icon, color: color),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(title,
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: color)),
+                ),
+              ]),
+              Divider(color: color),
+              for (final s in items)
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 3),
+                  child: Text('• $s'),
+                ),
+            ],
+          ),
+        ),
+      );
   @override
   Widget build(BuildContext context) => Container(
     decoration: const BoxDecoration(
       gradient: LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Color(0xFF101957), Color(0xFFFFFFFF)],
+        colors: [Color(0xFF101957), Color.fromARGB(255, 152, 191, 229)],
       ),
     ),
     child: ListView(
@@ -207,7 +210,7 @@ class HomePage extends StatelessWidget {
           child: Container(
             padding: const EdgeInsets.all(4),
             decoration: const BoxDecoration(
-              color: Colors.indigo,
+              color: Color.fromARGB(255, 1, 5, 29),
               shape: BoxShape.circle,
             ),
             child: const Avatar('assets/images/moi.jpg', size: 120),
@@ -314,7 +317,7 @@ class ContactPage extends StatelessWidget {
 
   Widget _tile(IconData icon, String titre, String valeur, {String? url}) => Card(
     child: ListTile(
-      leading: Icon(icon, color: Colors.indigo),
+      leading: Icon(icon, color: const Color.fromARGB(255, 5, 13, 163)),
       title: Text(titre),
       subtitle: Text(valeur),
       trailing: url == null ? null : const Icon(Icons.open_in_new),
