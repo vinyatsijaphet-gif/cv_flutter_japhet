@@ -10,7 +10,7 @@ class CvApp extends StatelessWidget {
   Widget build(BuildContext context) => MaterialApp(
     title: 'CV Japhet',
     debugShowCheckedModeBanner: false,
-    theme: ThemeData(colorSchemeSeed: Colors.indigo, useMaterial3: true),
+    theme: ThemeData(colorSchemeSeed: const Color.fromARGB(255, 30, 56, 204), useMaterial3: true),
     home: const LoginPage(),
   );
 }
@@ -192,78 +192,86 @@ class HomePage extends StatelessWidget {
   );
 
   @override
-  Widget build(BuildContext context) => ListView(
-    padding: const EdgeInsets.all(16),
-    children: [
-      Center(
-        child: Container(
-          padding: const EdgeInsets.all(4),
-          decoration: const BoxDecoration(
-            color: Colors.indigo,
-            shape: BoxShape.circle,
+  Widget build(BuildContext context) => Container(
+    decoration: const BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color(0xFF101957), Color(0xFFFFFFFF)],
+      ),
+    ),
+    child: ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Center(
+          child: Container(
+            padding: const EdgeInsets.all(4),
+            decoration: const BoxDecoration(
+              color: Colors.indigo,
+              shape: BoxShape.circle,
+            ),
+            child: const Avatar('assets/images/moi.jpg', size: 120),
           ),
-          child: const Avatar('assets/images/moi.jpg', size: 120),
         ),
-      ),
-      const SizedBox(height: 12),
-      const Center(
-        child: Text('Mbusa Vinyatsi Japhet',
-            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
-      ),
-      const Center(
-        child: Text(
-          'Étudiant en L3 Informatique de Gestion – ISIG-Goma',
-          textAlign: TextAlign.center,
+        const SizedBox(height: 12),
+        const Center(
+          child: Text('Mbusa Vinyatsi Japhet',
+              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
         ),
-      ),
-      const SizedBox(height: 16),
-      _section('Profil', Icons.person, [
-        "Étudiant en dernière année de Licence en Informatique de Gestion des Entreprises, avec une expérience de terrain en logistique humanitaire, gestion de bases de données logistiques et sécurité.",
-        "Motivé par l'intelligence artificielle, la cybersécurité et la conception de systèmes d'information.",
-      ]),
-      _section('Formation', Icons.school, [
-        "2024 – 2027 : Licence en Informatique de Gestion des Entreprises (L3, LMD) – ISIG-Goma",
-        "2022 – 2023 : Licence en Sciences Commerciales et Financières, option Comptabilité – ISC Bunia (mention Distinction)",
-        "2021 – 2022 : Diplôme d'État des Humanités, option Technique Sociale – Institut Diangienda, Bunia (mention Satisfaction)",
-      ]),
-      _section('Expériences', Icons.work, [
-        "Juil. 2023 – nov. 2024 : Magasinier, World Vision International (Butembo)",
-        "Juil. 2022 – juin 2023 : Assistant magasinier et gestionnaire de base de données logistiques, VIGLOJ ASBL (Goma)",
-        "2021 – 2024 : Agent de sécurité, GCO Sécurité (Bunia)",
-        "Stage : installation, télécommunication et maintenance réseau, MD Engineering SARL",
-        "Projet : JaphetShop Stores, boutique en ligne WordPress / WooCommerce (Goma)",
-      ]),
-      _section('Formations complémentaires', Icons.workspace_premium, [
-        "Logistique humanitaire",
-        "Approvisionnement, achats et transport – SYJEPRO, Goma",
-        "Eau, hygiène et assainissement (WASH) – SYJEPRO, Goma",
-        "Sécurité – GCO Security, Bunia",
-        "Packing, labelling et palettisation – DHL Academy of Humanitarian Logistics",
-      ]),
-      _section('Compétences techniques', Icons.code, [
-        "Bases de données relationnelles, SQL / SQL Server (notions)",
-        "HTML, CSS, JavaScript, Python (notions)",
-        "Word, Excel, PowerPoint, Access, Outlook",
-        "Gestion informatisée de stock",
-        "Installation et maintenance de base d'équipements informatiques",
-        "WordPress / WooCommerce, Flutter (en apprentissage)",
-      ]),
-      _section('Langues', Icons.language, [
-        'Français : C2',
-        'Swahili : natif',
-        'Lingala : C1',
-        'Anglais : B1',
-      ]),
-      _section("Centres d'intérêt", Icons.favorite, [
-        'Intelligence artificielle',
-        'Cybersécurité',
-        "Systèmes d'information",
-        'Travail en mode projet',
-      ]),
-    ],
+        const Center(
+          child: Text(
+            'Étudiant en L3 Informatique de Gestion – ISIG-Goma',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        const SizedBox(height: 16),
+        _section('Profil', Icons.person, [
+          "Étudiant en dernière année de Licence en Informatique de Gestion des Entreprises, avec une expérience de terrain en logistique humanitaire, gestion de bases de données logistiques et sécurité.",
+          "Motivé par l'intelligence artificielle, la cybersécurité et la conception de systèmes d'information.",
+        ]),
+        _section('Formation', Icons.school, [
+          "2024 – 2027 : Licence en Informatique de Gestion des Entreprises (L3, LMD) – ISIG-Goma",
+          "2022 – 2023 : Licence en Sciences Commerciales et Financières, option Comptabilité – ISC Bunia (mention Distinction)",
+          "2021 – 2022 : Diplôme d'État des Humanités, option Technique Sociale – Institut Diangienda, Bunia (mention Satisfaction)",
+        ]),
+        _section('Expériences', Icons.work, [
+          "Juil. 2023 – nov. 2024 : Magasinier, World Vision International (Butembo)",
+          "Juil. 2022 – juin 2023 : Assistant magasinier et gestionnaire de base de données logistiques, VIGLOJ ASBL (Goma)",
+          "2021 – 2024 : Agent de sécurité, GCO Sécurité (Bunia)",
+          "Stage : installation, télécommunication et maintenance réseau, MD Engineering SARL",
+          "Projet : JaphetShop Stores, boutique en ligne WordPress / WooCommerce (Goma)",
+        ]),
+        _section('Formations complémentaires', Icons.workspace_premium, [
+          "Logistique humanitaire",
+          "Approvisionnement, achats et transport – SYJEPRO, Goma",
+          "Eau, hygiène et assainissement (WASH) – SYJEPRO, Goma",
+          "Sécurité – GCO Security, Bunia",
+          "Packing, labelling et palettisation – DHL Academy of Humanitarian Logistics",
+        ]),
+        _section('Compétences techniques', Icons.code, [
+          "Bases de données relationnelles, SQL / SQL Server (notions)",
+          "HTML, CSS, JavaScript, Python (notions)",
+          "Word, Excel, PowerPoint, Access, Outlook",
+          "Gestion informatisée de stock",
+          "Installation et maintenance de base d'équipements informatiques",
+          "WordPress / WooCommerce, Flutter (en apprentissage)",
+        ]),
+        _section('Langues', Icons.language, [
+          'Français : C2',
+          'Swahili : natif',
+          'Lingala : C1',
+          'Anglais : B1',
+        ]),
+        _section("Centres d'intérêt", Icons.favorite, [
+          'Intelligence artificielle',
+          'Cybersécurité',
+          "Systèmes d'information",
+          'Travail en mode projet',
+        ]),
+      ],
+    ),
   );
 }
-
 
 // ---------- Page 3 : Famille ----------
 class FamilyMember {
