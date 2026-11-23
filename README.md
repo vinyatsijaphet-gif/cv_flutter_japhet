@@ -6,7 +6,11 @@ Le **TP2** ajoute une **authentification réelle** et la **gestion dynamique des
 ## 🎥 Démonstration
 
 <!-- ▶ Remplacer la ligne ci-dessous par la vidéo (voir « Ajouter la vidéo » plus bas) -->
-https://github.com/<utilisateur>/<depot>/assets/<id>/demo-tp2.mp4
+
+
+https://github.com/user-attachments/assets/6c6b3380-1471-41f5-b9a6-91c5a38a6a93
+
+
 
 > Vidéo de démonstration : inscription → connexion → liste des membres → ajout (avec photo) → modification → suppression → déconnexion.
 
