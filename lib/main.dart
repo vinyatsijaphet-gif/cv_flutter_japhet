@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'pages/famille_page.dart';
+import 'pages/login_page.dart';
+import 'services/session.dart';
+
 void main() => runApp(const CvApp());
 
 class CvApp extends StatelessWidget {
@@ -11,8 +15,42 @@ class CvApp extends StatelessWidget {
     title: 'CV Japhet',
     debugShowCheckedModeBanner: false,
     theme: ThemeData(colorSchemeSeed: const Color.fromARGB(255, 30, 56, 204), useMaterial3: true),
-    home: const LoginPage(),
+    home: const AuthGate(),
   );
+}
+
+// ---------- Choix de l'écran : connexion réelle (API) ou application ----------
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  bool? _logged; // null = vérification en cours
+
+  @override
+  void initState() {
+    super.initState();
+    Session.isLoggedIn().then((v) {
+      if (mounted) setState(() => _logged = v);
+    });
+  }
+
+  Future<void> _logout() async {
+    await Session.clear();
+    if (mounted) setState(() => _logged = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (_logged == null) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (_logged!) return HomeShell(onLogout: _logout);
+    return LoginPage(onLoggedIn: () => setState(() => _logged = true));
+  }
 }
 
 // ---------- Widget photo (icône de secours si l'image manque) ----------
@@ -38,92 +76,10 @@ class Avatar extends StatelessWidget {
   );
 }
 
-// ---------- Page 1 : Connexion ----------
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
-
-  @override
-  State<LoginPage> createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  final _id = TextEditingController();
-  final _pwd = TextEditingController();
-  bool _hidden = true;
-
-  void _login() {
-    if (_id.text.trim() == 'japhet' && _pwd.text == '1234') {
-      Navigator.pushReplacement(
-          context, MaterialPageRoute(builder: (_) => const HomeShell()));
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Identifiant ou mot de passe incorrect')),
-      );
-    }
-  }
-
-  @override
-  void dispose() {
-    _id.dispose();
-    _pwd.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => Scaffold(
-    body: Center(
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          children: [
-            const Icon(Icons.account_circle, size: 96, color: Colors.indigo),
-            const SizedBox(height: 8),
-            const Text('Mon CV',
-                style:
-                TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-            const SizedBox(height: 32),
-            TextField(
-              controller: _id,
-              decoration: const InputDecoration(
-                labelText: 'Identifiant',
-                prefixIcon: Icon(Icons.person),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _pwd,
-              obscureText: _hidden,
-              decoration: InputDecoration(
-                labelText: 'Mot de passe',
-                prefixIcon: const Icon(Icons.lock),
-                border: const OutlineInputBorder(),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                      _hidden ? Icons.visibility : Icons.visibility_off),
-                  onPressed: () => setState(() => _hidden = !_hidden),
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: FilledButton(
-                onPressed: _login,
-                child: const Text('Se connecter'),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}
-
 // ---------- Navigation (barre du bas) ----------
 class HomeShell extends StatefulWidget {
-  const HomeShell({super.key});
+  final VoidCallback onLogout;
+  const HomeShell({super.key, required this.onLogout});
 
   @override
   State<HomeShell> createState() => _HomeShellState();
@@ -132,7 +88,7 @@ class HomeShell extends StatefulWidget {
 class _HomeShellState extends State<HomeShell> {
   int _index = 0;
   static const _titles = ['Accueil', 'Famille', 'Contact'];
-  static const _pages = [HomePage(), FamilyPage(), ContactPage()];
+  static const _pages = [HomePage(), FamillePage(), ContactPage()];
 
   @override
   Widget build(BuildContext context) => Scaffold(
@@ -142,8 +98,7 @@ class _HomeShellState extends State<HomeShell> {
         IconButton(
           tooltip: 'Déconnexion',
           icon: const Icon(Icons.logout),
-          onPressed: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (_) => const LoginPage())),
+          onPressed: widget.onLogout,
         ),
       ],
     ),
@@ -273,41 +228,6 @@ class HomePage extends StatelessWidget {
         ]),
       ],
     ),
-  );
-}
-
-// ---------- Page 3 : Famille ----------
-class FamilyMember {
-  final String nom, lien, profession, photo;
-  const FamilyMember(this.nom, this.lien, this.profession, this.photo);
-}
-
-class FamilyPage extends StatelessWidget {
-  const FamilyPage({super.key});
-
-  static const membres = [
-    FamilyMember('Ben Kasereka', 'Grand frère', 'Manager', 'assets/images/ben.jpg'),
-    FamilyMember('Grâce', 'Belle-sœur', 'Manager', 'assets/images/grace.jpg'),
-    FamilyMember('Deborah Vinyatsi', 'Petite sœur', 'Étudiante', 'assets/images/deborah.jpg'),
-    FamilyMember('Dorothée Mughole', 'Épouse', 'Entrepreneure', 'assets/images/dorothee.jpg'),
-  ];
-
-  @override
-  Widget build(BuildContext context) => ListView.builder(
-    padding: const EdgeInsets.all(12),
-    itemCount: membres.length,
-    itemBuilder: (_, i) {
-      final m = membres[i];
-      return Card(
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(12),
-          leading: Avatar(m.photo, size: 56),
-          title: Text(m.nom,
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-          subtitle: Text('${m.lien} • ${m.profession}'),
-        ),
-      );
-    },
   );
 }
 
